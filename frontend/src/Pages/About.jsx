@@ -2,6 +2,7 @@ import  { useEffect, memo } from "react"
 import { FileText, Sparkles } from "lucide-react"
 import AOS from 'aos'
 import 'aos/dist/aos.css'
+import { useTheme } from "../context/ThemeContect.jsx";
 
 
 const Header = memo(() => (
@@ -28,7 +29,7 @@ const ProfileImage = memo(() => (
       data-aos-duration="1000"
     >
       {/* Optimized gradient backgrounds with reduced complexity for mobile */}
-      <div className="absolute -inset-6 opacity-[25%] z-0 hidden sm:block">
+      <div className="absolute -inset-6 opacity-[12%] z-0 hidden sm:block">
         <div className="absolute inset-0 bg-gradient-to-r from-red-600 via-indigo-500 to-red-600 rounded-full blur-2xl animate-spin-slower" />
         <div className="absolute inset-0 bg-gradient-to-l from-blue-500 via-rose-500 to-pink-600 rounded-full blur-2xl animate-pulse-slow opacity-50" />
         <div className="absolute inset-0 bg-gradient-to-t from-blue-600 via-cyan-500 to-teal-400 rounded-full blur-2xl animate-float opacity-50" />
@@ -38,12 +39,9 @@ const ProfileImage = memo(() => (
         <div className="w-72 h-72 sm:w-80 sm:h-80 rounded-full overflow-hidden shadow-[0_0_40px_rgba(120,119,198,0.3)] transform transition-all duration-700 group-hover:scale-105">
           <div className="absolute inset-0 border-4 border-white/20 rounded-full z-20 transition-all duration-700 group-hover:border-white/40 group-hover:scale-105" />
           
-          {/* Optimized overlay effects - disabled on mobile */}
-          <div className="absolute inset-0 bg-gradient-to-b from-black/20 via-transparent to-black/40 z-10 transition-opacity duration-700 group-hover:opacity-0 hidden sm:block" />
-          <div className="absolute inset-0 bg-gradient-to-t from-red-500/20 via-transparent to-blue-500/20 z-10 opacity-0 group-hover:opacity-100 transition-opacity duration-700 hidden sm:block" />
-          
+         
           <img
-            src="../../src/assets/media/hikma learn.jpg"
+            src="../../src/assets/media/logo.png"
             alt="Profile"
             className="w-full h-full object-cover transition-all duration-700 group-hover:scale-110 group-hover:rotate-2"
             loading="lazy"
@@ -64,6 +62,7 @@ ProfileImage.displayName = "ProfileImage";
 
 
 const AboutPage = () => {
+  const { theme } = useTheme();
 
 
   useEffect(() => {
@@ -90,14 +89,32 @@ const AboutPage = () => {
   }, []);
 
   return (
-    <div
-      className="h-auto pb-[10%] text-white overflow-hidden px-[5%] sm:px-[5%] lg:px-[10%] mt-10 sm-mt-0" 
-      id="About"
-    >
+      <div
+        id="About"
+        className={`
+          h-auto pb-[10%] overflow-hidden
+          px-[5%] sm:px-[5%] lg:px-[10%]
+          mt-10 sm:mt-0
+
+          ${theme === "dark"
+          ? "text-white"
+          : "text-gray-900"}
+        `}
+      >
       <Header />
 
       <div className="w-full mx-auto pt-8 sm:pt-12 relative">
         <div className="flex flex-col-reverse lg:grid lg:grid-cols-2 gap-10 lg:gap-16 items-center">
+          <div
+className={`
+space-y-6 text-center lg:text-left
+rounded-3xl p-8
+
+${theme === "dark"
+ ? "bg-gray-900/40 backdrop-blur-xl border border-gray-800"
+ : "bg-white/70 backdrop-blur-md shadow-xl border border-gray-200"}
+`}
+>
           <div className="space-y-6 text-center lg:text-left">
            <div>
                     <img data-aos="fade-in" 
@@ -110,7 +127,12 @@ const AboutPage = () => {
 
                   </div>
             <p 
-      className="mt-2 text-gray-400 max-w-2xl mx-auto text-base sm:text-lg flex items-center justify-center gap-2"
+      className={`
+        mt-2
+        ${theme === "dark" ? "text-gray-400" : "text-gray-700"}
+        max-w-2xl mx-auto text-base sm:text-lg
+        flex items-center justify-center gap-2
+        `}
       data-aos="zoom-in-up"
       data-aos-duration="800"
     >
@@ -120,7 +142,11 @@ const AboutPage = () => {
     </p>
             
             <p 
-              className="text-base sm:text-lg lg:text-xl text-gray-400 leading-relaxed text-justify pb-4 sm:pb-0"
+              className={`
+                text-base sm:text-lg lg:text-xl
+                ${theme === "dark" ? "text-gray-400" : "text-gray-700"}
+                leading-relaxed text-justify pb-4 sm:pb-0
+                `}
               data-aos="fade-right"
               data-aos-duration="1500"
             >
@@ -146,6 +172,7 @@ const AboutPage = () => {
               </a>
              
             </div>
+          </div>
           </div>
 
           <ProfileImage />

@@ -14,9 +14,8 @@ const Navbar = () => {
     const navItems = useMemo(
         () => [
             { href: "#Home", label: "Home" },
-            { href: "#Inspiration", label: "Inspiration" },
             { href: "#About", label: "About" },
-            { href: "#Team", label: "Team" },
+            { href: "#Inspiration", label: "Inspiration" },
             { href: "#Courses", label: "Courses" },
             { href: "/auth", label: "Sign In", isAuth: true },
         ],

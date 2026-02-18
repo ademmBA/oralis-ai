@@ -56,13 +56,13 @@ const Home = () => {
             </div>
           </div>
 
-          <p className="mt-6 text-gray-100 max-w-3xl mx-auto text-lg md:text-xl lg:text-2xl font-light flex items-center justify-center gap-2 mb-12 drop-shadow-lg">
+          <p className={`mt-6 max-w-3xl mx-auto text-lg md:text-xl lg:text-2xl font-light flex items-center justify-center gap-2 mb-12 drop-shadow-lg ${theme === "dark" ? "text-gray-100" : "text-gray-800"}`}>
             <Sparkles className="w-5 h-5 md:w-6 md:h-6 text-red-400 drop-shadow-md" />
             Where limitations become launchpads for greatness
             <Sparkles className="w-5 h-5 md:w-6 md:h-6 text-red-400 drop-shadow-md" />
           </p>
 
-          <p className="text-gray-400 max-w-4xl mx-auto text-base md:text-lg mb-12">
+          <p className={`max-w-4xl mx-auto text-base md:text-lg mb-12 ${theme === "dark" ? "text-gray-400" : "text-gray-600"}`}>
             Hikma Learn is dedicated to creating inclusive learning opportunities that empower individuals of all abilities. We believe that disability is not inability, but rather a unique perspective that can lead to extraordinary achievements. Our platform celebrates neurodiversity and provides adaptive learning tools for everyone.
           </p>
 
@@ -90,8 +90,8 @@ const Home = () => {
                 type="button"
                 className="
               w-full lg:w-auto px-8 py-4 md:px-12 md:py-5 text-lg md:text-xl font-medium
-              rounded-lg border-2 border-gray-400 bg-gradient-to-br from-gray-800/50 to-gray-900/50 text-gray-100 shadow-lg
-              hover:bg-gradient-to-br hover:from-gray-700/60 hover:to-gray-800/60 hover:border-gray-300
+              rounded-lg border-2 border-gray-700 bg-gradient-to-br from-gray-800/50 to-gray-900/50 text-gray-50 shadow-lg
+              hover:bg-gradient-to-br hover:from-gray-700/60 hover:to-gray-800/60 hover:border-gray-700
               focus:outline-none focus:ring-2 focus:ring-gray-400/50
               disabled:opacity-50 disabled:pointer-events-none
               transition-all duration-300 hover:scale-105 backdrop-blur-sm
@@ -117,23 +117,23 @@ const Home = () => {
         <Inspirations />
 
         <style>{`
-        @keyframes float {
-          0%, 100% { transform: translateY(0); }
-          50% { transform: translateY(-10px); }
-        }
-        .animate-float {
-          animation: float 6s ease-in-out infinite;
-        }
-        .gradient-border {
-          position: relative;
-          border: double 3px transparent;
-          border-radius: 20px;
-          background-image: linear-gradient(#1f2937, #1f2937), 
-                            linear-gradient(to right, #dc2626, #ef4444);
-          background-origin: border-box;
-          background-clip: content-box, border-box;
-        }
-      `}</style>
+  @keyframes float {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-10px); }
+  }
+  .animate-float {
+    animation: float 6s ease-in-out infinite;
+  }
+  .gradient-border {
+    position: relative;
+    border: double 3px transparent;
+    border-radius: 20px;
+    background-image: linear-gradient(${theme === "dark" ? "#1f2937" : "#ffffff"}, ${theme === "dark" ? "#1f2937" : "#ffffff"}), 
+                      linear-gradient(to right, #dc2626, #ef4444);
+    background-origin: border-box;
+    background-clip: content-box, border-box;
+  }
+`}</style>
         <Footer />
       </div>
   );
