@@ -26,10 +26,10 @@ export class User {
     @Prop({ index: true, sparse: true })
     cin?: string;
 
-    @Prop()
+    @Prop({required: true})
     phone?: string;
 
-    @Prop()
+    @Prop({required: true})
     dateOfBirth?: Date;
 
     @Prop({
