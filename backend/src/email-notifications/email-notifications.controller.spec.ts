@@ -11,7 +11,9 @@ describe('EmailNotificationsController', () => {
       providers: [EmailNotificationsService],
     }).compile();
 
-    controller = module.get<EmailNotificationsController>(EmailNotificationsController);
+    controller = module.get<EmailNotificationsController>(
+      EmailNotificationsController,
+    );
   });
 
   it('should be defined', () => {

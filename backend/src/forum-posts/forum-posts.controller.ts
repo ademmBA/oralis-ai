@@ -1,4 +1,12 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Patch,
+  Param,
+  Delete,
+} from '@nestjs/common';
 import { ForumPostsService } from './forum-posts.service';
 import { CreateForumPostDto } from './dto/create-forum-post.dto';
 import { UpdateForumPostDto } from './dto/update-forum-post.dto';
@@ -23,7 +31,10 @@ export class ForumPostsController {
   }
 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateForumPostDto: UpdateForumPostDto) {
+  update(
+    @Param('id') id: string,
+    @Body() updateForumPostDto: UpdateForumPostDto,
+  ) {
     return this.forumPostsService.update(+id, updateForumPostDto);
   }
 

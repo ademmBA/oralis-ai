@@ -9,5 +9,4 @@ export class AppController {
   getHello() {
     return { message: 'Hello from NestJS backend' };
   }
-
 }

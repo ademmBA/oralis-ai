@@ -1,56 +1,103 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import { Document } from 'mongoose';
+import { Document, Schema as MongooseSchema, Types } from 'mongoose';
 
-export type UserDocument = User & Document;
+export type UserDocument = User & Document & { _id: Types.ObjectId };
+
+// Enum for user roles
+export enum UserRole {
+  STUDENT = 'student',
+  INSTRUCTOR = 'instructor',
+  ADMIN = 'admin',
+}
 
 @Schema({ timestamps: true })
 export class User {
-    @Prop({ required: true, unique: true, index: true })
-    email: string;
+  // Unique username, trimmed and lowercase
+  @Prop({
+    required: true,
+    unique: true,
+    trim: true,
+    lowercase: true,
+  })
+  username!: string;
 
-    @Prop({ required: true })
-    password: string;
+  // Unique email, trimmed and lowercase
+  @Prop({
+    required: true,
+    unique: true,
+    trim: true,
+    lowercase: true,
+  })
+  email!: string;
 
-    @Prop({ required: true })
-    firstName: string;
+  // Password, hidden by default in queries
+  @Prop({
+    required: true,
+    select: false,
+  })
+  password!: string;
 
-    @Prop({ required: true })
-    lastName: string;
+  // User first name
+  @Prop({ required: true, trim: true })
+  firstName!: string;
 
-    @Prop({ required: true, enum: ['student', 'instructor', 'admin'], index: true })
-    role: string;
+  // User last name
+  @Prop({ required: true, trim: true })
+  lastName!: string;
 
-    @Prop()
-    profileImage?: string;
+  // Role of the user with enum validation
+  @Prop({
+    required: true,
+    enum: UserRole,
+    index: true,
+  })
+  role!: UserRole;
 
-    @Prop({ index: true, sparse: true })
-    cin?: string;
+  // Optional profile image URL
+  @Prop()
+  profileImage?: string;
 
-    @Prop({required: true})
-    phone?: string;
+  // Optional CIN with sparse index
+  @Prop({
+    sparse: true,
+    index: true,
+  })
+  cin?: string;
 
-    @Prop({required: true})
-    dateOfBirth?: Date;
+  // Phone number (required)
+  @Prop({ required: true })
+  phone!: string;
 
-    @Prop({
-        type: {
-            onUpload: { type: Boolean, default: true },
-            onGrade: { type: Boolean, default: true },
-            onFeedback: { type: Boolean, default: true },
-        },
-        default: {},
-    })
-    emailPreferences: {
-        onUpload: boolean;
-        onGrade: boolean;
-        onFeedback: boolean;
-    };
+  // Date of birth (required)
+  @Prop({ required: true })
+  dateOfBirth!: Date;
 
-    @Prop({ type: Object })
-    faceIdData?: Record<string, any>;
+  // Email notification preferences with default values
+  @Prop({
+    type: {
+      onUpload: { type: Boolean, default: true },
+      onGrade: { type: Boolean, default: true },
+      onFeedback: { type: Boolean, default: true },
+    },
+    default: () => ({}), // Prevents shared object reference
+  })
+  emailPreferences!: {
+    onUpload: boolean;
+    onGrade: boolean;
+    onFeedback: boolean;
+  };
 
-    @Prop({ default: true })
-    isActive: boolean;
+  // Optional face recognition data (flexible storage)
+  @Prop({
+    type: MongooseSchema.Types.Mixed,
+  })
+  faceIdData?: Record<string, any>;
+
+  // Active status, default true
+  @Prop({
+    default: true,
+  })
+  isActive!: boolean;
 }
 
 export const UserSchema = SchemaFactory.createForClass(User);
