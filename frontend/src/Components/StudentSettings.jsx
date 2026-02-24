@@ -17,6 +17,7 @@ import {
   GraduationCap,
   LogOut
 } from 'lucide-react';
+import { useTheme } from '../context/ThemeContect.jsx';
 
 const availableDisabilities = [
   'Visual Impairment',
@@ -24,7 +25,7 @@ const availableDisabilities = [
   'Mobility Impairment',
   'Learning Disability',
   'Autism Spectrum',
-];
+]; 
 
 // Utility functions
 const checkPasswordStrength = (password) => {
@@ -59,18 +60,53 @@ const getPasswordStrengthText = (strength) => {
   }
 };
 
-const PlaceholderTab = memo(({ title, description }) => (
-  <div className="backdrop-blur-md bg-white/10 rounded-xl p-8 border border-white/20 text-center">
-    <div className="mb-4">
-      <div className="w-16 h-16 bg-gradient-to-r from-red-500 to-red-600 rounded-full mx-auto mb-4 flex items-center justify-center">
-        <Settings className="w-8 h-8 text-white" />
+const PlaceholderTab = memo(({ title, description }) => {
+
+  const { theme } = useTheme();
+  const isDark = theme === 'dark';
+
+  return (
+    <div
+      className={`backdrop-blur-md rounded-xl p-8 border text-center transition-colors duration-300 ${
+        isDark
+          ? 'bg-white/10 border-white/20'
+          : 'bg-white/80 border-gray-200'
+      }`}
+    >
+      <div className="mb-4">
+
+        <div className="w-16 h-16 bg-gradient-to-r from-red-500 to-red-600 rounded-full mx-auto mb-4 flex items-center justify-center">
+          <Settings className="w-8 h-8 text-white" />
+        </div>
+
+        <h3
+          className={`text-xl font-bold mb-2 ${
+            isDark ? 'text-white' : 'text-gray-900'
+          }`}
+        >
+          {title}
+        </h3>
+
+        <p
+          className={`mb-4 ${
+            isDark ? 'text-gray-300' : 'text-gray-600'
+          }`}
+        >
+          {description}
+        </p>
+
+        <p
+          className={`text-sm ${
+            isDark ? 'text-gray-400' : 'text-gray-500'
+          }`}
+        >
+          This section is under development
+        </p>
+
       </div>
-      <h3 className="text-xl font-bold text-white mb-2">{title}</h3>
-      <p className="text-gray-300 mb-4">{description}</p>
-      <p className="text-sm text-gray-400">This section is under development</p>
     </div>
-  </div>
-));
+  );
+});
 
 PlaceholderTab.propTypes = {
   title: PropTypes.string.isRequired,
@@ -79,81 +115,128 @@ PlaceholderTab.propTypes = {
 
 PlaceholderTab.displayName = 'PlaceholderTab';
 
-const DisabilitiesSettings = memo(({ 
-  disabilities, 
+const DisabilitiesSettings = memo(({
+  disabilities,
   handleDisabilityToggle,
   isUpdatingDisabilities,
   updateMessage,
   handleDisabilitySubmit
-}) => (
-  <div className="backdrop-blur-md bg-white/10 rounded-xl p-6 border border-white/20">
-    <h3 className="text-xl font-bold text-white mb-4 flex items-center">
-      <GraduationCap className="w-5 h-5 mr-2 text-blue-400" />
-      Disabilities Settings
-    </h3>
-    
-    <div className="space-y-6">
-      <div>
-        <label className="block text-gray-300 text-sm font-medium mb-4">
-          Select your disabilities (if any)
-        </label>
-        <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
-          {availableDisabilities.map((disability) => (
-            <label
-              key={disability}
-              className={`flex items-center p-3 rounded-lg border cursor-pointer transition-all duration-200 ${
-                disabilities.includes(disability)
-                  ? 'bg-blue-600/20 border-blue-500 text-blue-300'
-                  : 'bg-gray-800/50 border-gray-600 text-gray-300 hover:bg-gray-700/50'
-              }`}
-            >
-              <input
-                type="checkbox"
-                className="sr-only"
-                checked={disabilities.includes(disability)}
-                onChange={() => handleDisabilityToggle(disability)}
-              />
-              <span className="text-sm font-medium">{disability}</span>
-            </label>
-          ))}
-        </div>
-      </div>
+}) => {
+  const { theme } = useTheme();
+  const isDark = theme === 'dark';
+  return (
+    <div
+      className={`backdrop-blur-md rounded-xl p-6 border transition-colors duration-300 ${
+        isDark
+          ? 'bg-white/10 border-white/20'
+          : 'bg-white/80 border-gray-200'
+      }`}
+    >
 
-      <div className="flex justify-end">
-        <button
-          onClick={handleDisabilitySubmit}
-          disabled={isUpdatingDisabilities}
-          className="flex items-center px-6 py-3 bg-gradient-to-r from-blue-500 to-blue-600 text-white rounded-lg font-medium hover:from-blue-600 hover:to-blue-700 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-300 hover:scale-105"
-        >
-          {isUpdatingDisabilities ? (
-            <>
-              <RefreshCw className="w-4 h-4 mr-2 animate-spin" />
-              Updating...
-            </>
-          ) : (
-            <>
-              <Save className="w-4 h-4 mr-2" />
-              Save Changes
-            </>
-          )}
-        </button>
-      </div>
+      <h3
+        className={`text-xl font-bold mb-4 flex items-center ${
+          isDark ? 'text-white' : 'text-gray-900'
+        }`}
+      >
+        <GraduationCap className="w-5 h-5 mr-2 text-blue-500" />
+        Disabilities Settings
+      </h3>
 
-      {updateMessage && (
-        <div className={`flex items-center px-4 py-2 rounded-lg text-sm font-medium ${
-          updateMessage.includes('successfully') ? 'bg-green-500/20 text-green-400' : 'bg-red-500/20 text-red-400'
-        }`}>
-          {updateMessage.includes('successfully') ? (
-            <Check className="w-4 h-4 mr-2" />
-          ) : (
-            <X className="w-4 h-4 mr-2" />
-          )}
-          {updateMessage}
+      <div className="space-y-6">
+
+        {/* Label */}
+        <div>
+          <label
+            className={`block text-sm font-medium mb-4 ${
+              isDark ? 'text-gray-300' : 'text-gray-700'
+            }`}
+          >
+            Select your disabilities (if any)
+          </label>
+
+          {/* Disabilities Grid */}
+          <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
+
+            {availableDisabilities.map((disability) => {
+
+              const selected = disabilities.includes(disability);
+
+              return (
+
+                <label
+                  key={disability}
+                  className={`flex items-center p-3 rounded-lg border cursor-pointer transition-all duration-200 ${
+                    selected
+                      ? isDark
+                        ? 'bg-blue-600/20 border-blue-500 text-blue-300'
+                        : 'bg-blue-100 border-blue-500 text-blue-700'
+                      : isDark
+                        ? 'bg-gray-800/50 border-gray-600 text-gray-300 hover:bg-gray-700/50'
+                        : 'bg-gray-100 border-gray-300 text-gray-800 hover:bg-gray-200'
+                  }`}
+                >
+
+                  <input
+                    type="checkbox"
+                    className="sr-only"
+                    checked={selected}
+                    onChange={() => handleDisabilityToggle(disability)}
+                  />
+
+                  <span className="text-sm font-medium">
+                    {disability}
+                  </span>
+
+                </label>
+
+              );
+            })}
+
+          </div>
         </div>
-      )}
+
+        {/* Save Button */}
+        <div className="flex justify-end">
+
+          <button
+            onClick={handleDisabilitySubmit}
+            disabled={isUpdatingDisabilities}
+            className="flex items-center px-6 py-3 bg-gradient-to-r from-blue-500 to-blue-600 text-white rounded-lg font-medium hover:from-blue-600 hover:to-blue-700 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-300 hover:scale-105"
+          >
+
+            {isUpdatingDisabilities ? (
+              <>
+                <RefreshCw className="w-4 h-4 mr-2 animate-spin" />
+                Updating...
+              </>
+            ) : (
+              <>
+                <Save className="w-4 h-4 mr-2" />
+                Save Changes
+              </>
+            )}
+          </button>
+        </div>
+        {/* Message */}
+        {updateMessage && (
+          <div
+            className={`flex items-center px-4 py-2 rounded-lg text-sm font-medium ${
+              updateMessage.includes('successfully')
+                ? 'bg-green-500/20 text-green-500'
+                : 'bg-red-500/20 text-red-500'
+            }`}
+          >
+            {updateMessage.includes('successfully')
+              ? <Check className="w-4 h-4 mr-2" />
+              : <X className="w-4 h-4 mr-2" />
+            }
+            {updateMessage}
+          </div>
+        )}
+      </div>
     </div>
-  </div>
-));
+  );
+});
 
 DisabilitiesSettings.propTypes = {
   disabilities: PropTypes.array.isRequired,
@@ -166,8 +249,8 @@ DisabilitiesSettings.propTypes = {
 DisabilitiesSettings.displayName = 'DisabilitiesSettings';
 
 const SecuritySettings = memo(({
-  showCurrentPassword, 
-  showNewPassword, 
+  showCurrentPassword,
+  showNewPassword,
   showConfirmPassword,
   passwordForm,
   passwordStrength,
@@ -178,159 +261,278 @@ const SecuritySettings = memo(({
   setShowCurrentPassword,
   setShowNewPassword,
   setShowConfirmPassword
-}) => (
-  <div className="space-y-8">
-    <div className="backdrop-blur-md bg-white/10 rounded-xl p-6 border border-white/20">
-      <h3 className="text-xl font-bold text-white mb-4 flex items-center">
-        <Lock className="w-5 h-5 mr-2 text-red-400" />
-        Change Password
-      </h3>
+}) => {
 
-      <form className="space-y-6" onSubmit={handlePasswordSubmit}>
-        {/* Current Password */}
-        <div>
-          <label className="block text-sm font-medium text-gray-300 mb-2">
-            Current Password
-          </label>
-          <div className="relative">
-            <input
-              type={showCurrentPassword ? 'text' : 'password'}
-              value={passwordForm.currentPassword}
-              onChange={(e) => handlePasswordChange('currentPassword', e.target.value)}
-              className="w-full px-4 py-3 bg-gray-800/50 border border-gray-600 rounded-lg text-white placeholder-gray-400 focus:border-red-400 focus:ring-2 focus:ring-red-400/20 transition-all duration-300"
-              placeholder="Enter your current password"
-              required
-              autoFocus
-            />
-            <button
-              type="button"
-              onClick={() => setShowCurrentPassword(!showCurrentPassword)}
-              className="absolute right-3 top-3 text-gray-400 hover:text-white transition-colors"
-            >
-              {showCurrentPassword ? <EyeOff size={20} /> : <Eye size={20} />}
-            </button>
+  const { theme } = useTheme();
+  const isDark = theme === 'dark';
+
+  const inputClasses = `
+    w-full px-4 py-3 rounded-lg transition-all duration-300
+    ${
+      isDark
+        ? 'bg-gray-800/50 border-gray-600 text-white placeholder-gray-400 focus:border-red-400 focus:ring-red-400/20'
+        : 'bg-white border-gray-300 text-gray-900 placeholder-gray-500 focus:border-red-500 focus:ring-red-500/20'
+    }
+    border focus:ring-2
+  `;
+
+  const cardClasses = `
+    backdrop-blur-md rounded-xl p-6 border transition-colors duration-300
+    ${
+      isDark
+        ? 'bg-white/10 border-white/20'
+        : 'bg-white/80 border-gray-200'
+    }
+  `;
+
+  const labelClasses = `
+    block text-sm font-medium mb-2
+    ${isDark ? 'text-gray-300' : 'text-gray-700'}
+  `;
+
+  return (
+
+    <div className="space-y-8">
+
+      {/* Password Card */}
+      <div className={cardClasses}>
+
+        <h3 className={`text-xl font-bold mb-4 flex items-center ${
+          isDark ? 'text-white' : 'text-gray-900'
+        }`}>
+          <Lock className="w-5 h-5 mr-2 text-red-500" />
+          Change Password
+        </h3>
+
+        <form className="space-y-6" onSubmit={handlePasswordSubmit}>
+
+          {/* Current Password */}
+          <div>
+
+            <label className={labelClasses}>
+              Current Password
+            </label>
+
+            <div className="relative">
+
+              <input
+                type={showCurrentPassword ? 'text' : 'password'}
+                value={passwordForm.currentPassword}
+                onChange={(e)=>handlePasswordChange('currentPassword',e.target.value)}
+                className={inputClasses}
+                placeholder="Enter your current password"
+                required
+                autoFocus
+              />
+
+              <button
+                type="button"
+                onClick={()=>setShowCurrentPassword(!showCurrentPassword)}
+                className={`absolute right-3 top-3 transition-colors ${
+                  isDark
+                    ? 'text-gray-400 hover:text-white'
+                    : 'text-gray-500 hover:text-gray-900'
+                }`}
+              >
+                {showCurrentPassword ? <EyeOff size={20}/> : <Eye size={20}/>}
+              </button>
+
+            </div>
           </div>
-        </div>
 
-        {/* New Password */}
-        <div>
-          <label className="block text-sm font-medium text-gray-300 mb-2">
-            New Password
-          </label>
-          <div className="relative">
-            <input
-              type={showNewPassword ? 'text' : 'password'}
-              value={passwordForm.newPassword}
-              onChange={(e) => handlePasswordChange('newPassword', e.target.value)}
-              className="w-full px-4 py-3 bg-gray-800/50 border border-gray-600 rounded-lg text-white placeholder-gray-400 focus:border-red-400 focus:ring-2 focus:ring-red-400/20 transition-all duration-300"
-              placeholder="Enter your new password"
-              required
-            />
-            <button
-              type="button"
-              onClick={() => setShowNewPassword(!showNewPassword)}
-              className="absolute right-3 top-3 text-gray-400 hover:text-white transition-colors"
-            >
-              {showNewPassword ? <EyeOff size={20} /> : <Eye size={20} />}
-            </button>
-          </div>
+          {/* New Password */}
+          <div>
 
-          {/* Password Strength Indicator */}
-          {passwordForm.newPassword && (
-            <div className="mt-2">
-              <div className="flex items-center space-x-2 mb-1">
-                <div className="flex-1 h-2 bg-gray-700 rounded-full overflow-hidden">
-                  <div
-                    className={`h-full transition-all duration-300 ${getPasswordStrengthColor(passwordStrength)}`}
-                    style={{ width: `${(passwordStrength / 5) * 100}%` }}
-                  />
+            <label className={labelClasses}>
+              New Password
+            </label>
+
+            <div className="relative">
+
+              <input
+                type={showNewPassword ? 'text':'password'}
+                value={passwordForm.newPassword}
+                onChange={(e)=>handlePasswordChange('newPassword',e.target.value)}
+                className={inputClasses}
+                placeholder="Enter your new password"
+                required
+              />
+
+              <button
+                type="button"
+                onClick={()=>setShowNewPassword(!showNewPassword)}
+                className={`absolute right-3 top-3 transition-colors ${
+                  isDark
+                    ? 'text-gray-400 hover:text-white'
+                    : 'text-gray-500 hover:text-gray-900'
+                }`}
+              >
+                {showNewPassword ? <EyeOff size={20}/> : <Eye size={20}/>}
+              </button>
+
+            </div>
+
+            {/* Password Strength */}
+            {passwordForm.newPassword && (
+
+              <div className="mt-2">
+
+                <div className="flex items-center space-x-2 mb-1">
+
+                  <div className={`flex-1 h-2 rounded-full overflow-hidden ${
+                    isDark ? 'bg-gray-700' : 'bg-gray-200'
+                  }`}>
+
+                    <div
+                      className={`h-full transition-all duration-300 ${getPasswordStrengthColor(passwordStrength)}`}
+                      style={{width:`${(passwordStrength/5)*100}%`}}
+                    />
+
+                  </div>
+
+                  <span
+                    className={`text-xs font-medium ${
+                      passwordStrength >=3
+                        ? 'text-green-500'
+                        : 'text-red-500'
+                    }`}
+                  >
+                    {getPasswordStrengthText(passwordStrength)}
+                  </span>
+
                 </div>
-                <span className={`text-xs font-medium ${passwordStrength >= 3 ? 'text-green-400' : 'text-red-400'}`}>
-                  {getPasswordStrengthText(passwordStrength)}
-                </span>
-              </div>
-              <div className="text-xs text-gray-400 space-y-1">
-                {/* Password requirements indicators */}
-              </div>
-            </div>
-          )}
-        </div>
 
-        {/* Confirm Password */}
-        <div>
-          <label className="block text-sm font-medium text-gray-300 mb-2">
-            Confirm New Password
-          </label>
-          <div className="relative">
-            <input
-              type={showConfirmPassword ? 'text' : 'password'}
-              value={passwordForm.confirmPassword}
-              onChange={(e) => handlePasswordChange('confirmPassword', e.target.value)}
-              className="w-full px-4 py-3 bg-gray-800/50 border border-gray-600 rounded-lg text-white placeholder-gray-400 focus:border-red-400 focus:ring-2 focus:ring-red-400/20 transition-all duration-300"
-              placeholder="Confirm your new password"
-              required
-            />
-            <button
-              type="button"
-              onClick={() => setShowConfirmPassword(!showConfirmPassword)}
-              className="absolute right-3 top-3 text-gray-400 hover:text-white transition-colors"
-            >
-              {showConfirmPassword ? <EyeOff size={20} /> : <Eye size={20} />}
-            </button>
-          </div>
-          {passwordForm.confirmPassword && passwordForm.newPassword !== passwordForm.confirmPassword && (
-            <p className="mt-1 text-sm text-red-400">Passwords do not match</p>
-          )}
-        </div>
+                <div className={`text-xs space-y-1 ${
+                  isDark ? 'text-gray-400' : 'text-gray-500'
+                }`}>
+                  {/* requirements */}
+                </div>
 
-        {/* Submit Button */}
-        <div className="flex items-center justify-between">
-          <button
-            type="submit"
-            disabled={isChangingPassword || passwordStrength < 3 || passwordForm.newPassword !== passwordForm.confirmPassword}
-            className="flex items-center px-6 py-3 bg-gradient-to-r from-red-500 to-red-600 text-white rounded-lg font-medium hover:from-red-600 hover:to-red-700 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-300 hover:scale-105"
-          >
-            {isChangingPassword ? (
-              <>
-                <RefreshCw className="w-4 h-4 mr-2 animate-spin" />
-                Changing Password...
-              </>
-            ) : (
-              <>
-                <Save className="w-4 h-4 mr-2" />
-                Change Password
-              </>
+              </div>
+
             )}
-          </button>
 
-          {passwordMessage && (
-            <div className={`flex items-center px-4 py-2 rounded-lg text-sm font-medium ${
-              passwordMessage.includes('successfully') ? 'bg-green-500/20 text-green-400' : 'bg-red-500/20 text-red-400'
-            }`}>
-              {passwordMessage.includes('successfully') ? (
-                <Check className="w-4 h-4 mr-2" />
-              ) : (
-                <X className="w-4 h-4 mr-2" />
-              )}
-              {passwordMessage}
+          </div>
+
+          {/* Confirm Password */}
+          <div>
+
+            <label className={labelClasses}>
+              Confirm New Password
+            </label>
+
+            <div className="relative">
+
+              <input
+                type={showConfirmPassword?'text':'password'}
+                value={passwordForm.confirmPassword}
+                onChange={(e)=>handlePasswordChange('confirmPassword',e.target.value)}
+                className={inputClasses}
+                placeholder="Confirm your new password"
+                required
+              />
+
+              <button
+                type="button"
+                    onClick={()=>setShowConfirmPassword(!showConfirmPassword)}
+                className={`absolute right-3 top-3 transition-colors ${
+                  isDark
+                    ? 'text-gray-400 hover:text-white'
+                    : 'text-gray-500 hover:text-gray-900'
+                }`}
+              >
+                {showConfirmPassword ? <EyeOff size={20}/> : <Eye size={20}/>}
+              </button>
+
             </div>
-          )}
+
+            {passwordForm.confirmPassword &&
+             passwordForm.newPassword !== passwordForm.confirmPassword && (
+
+              <p className="mt-1 text-sm text-red-500">
+                Passwords do not match
+              </p>
+
+            )}
+
+          </div>
+
+          {/* Submit */}
+          <div className="flex items-center justify-between">
+
+            <button
+              type="submit"
+              disabled={
+                isChangingPassword ||
+                passwordStrength <3 ||
+                passwordForm.newPassword !== passwordForm.confirmPassword
+              }
+              className="flex items-center px-6 py-3 bg-gradient-to-r from-red-500 to-red-600 text-white rounded-lg font-medium hover:from-red-600 hover:to-red-700 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-300 hover:scale-105"
+            >
+
+              {isChangingPassword ? (
+                <>
+                  <RefreshCw className="w-4 h-4 mr-2 animate-spin"/>
+                  Changing Password...
+                </>
+              ) : (
+                <>
+                  <Save className="w-4 h-4 mr-2"/>
+                  Change Password
+                </>
+              )}
+
+            </button>
+
+            {passwordMessage && (
+
+              <div
+                className={`flex items-center px-4 py-2 rounded-lg text-sm font-medium ${
+                  passwordMessage.includes('successfully')
+                    ? 'bg-green-500/20 text-green-500'
+                    : 'bg-red-500/20 text-red-500'
+                }`}
+              >
+
+                {passwordMessage.includes('successfully')
+                  ? <Check className="w-4 h-4 mr-2"/>
+                  : <X className="w-4 h-4 mr-2"/>
+                }
+
+                {passwordMessage}
+
+              </div>
+
+            )}
+
+          </div>
+
+        </form>
+
+      </div>
+
+
+      {/* Recent Activity */}
+      <div className={cardClasses}>
+
+        <h3 className={`text-xl font-bold mb-4 flex items-center ${
+          isDark ? 'text-white':'text-gray-900'
+        }`}>
+          <RefreshCw className="w-5 h-5 mr-2 text-blue-500"/>
+          Recent Security Activity
+        </h3>
+
+        <div className="space-y-3">
+          {/* Activity items */}
         </div>
-      </form>
+
+      </div>
+
     </div>
 
-    {/* Recent Activity */}
-    <div className="backdrop-blur-md bg-white/10 rounded-xl p-6 border border-white/20">
-      <h3 className="text-xl font-bold text-white mb-4 flex items-center">
-        <RefreshCw className="w-5 h-5 mr-2 text-blue-400" />
-        Recent Security Activity
-      </h3>
-      <div className="space-y-3">
-        {/* Activity items */}
-      </div>
-    </div>
-  </div>
-));
+  );
+
+});
 
 SecuritySettings.propTypes = {
   showCurrentPassword: PropTypes.bool.isRequired,
@@ -362,135 +564,214 @@ const StudentSettings = () => {
   const [showNewPassword, setShowNewPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [isChangingPassword, setIsChangingPassword] = useState(false);
+
   const [passwordForm, setPasswordForm] = useState({
     currentPassword: '',
     newPassword: '',
-    confirmPassword: ''
+    confirmPassword: '',
   });
+
   const [passwordStrength, setPasswordStrength] = useState(0);
   const [passwordMessage, setPasswordMessage] = useState('');
   const [currentUser, setCurrentUser] = useState(null);
 
+  // 👇 Theme Context
+  const { theme } = useTheme();
+  const isDark = theme === 'dark';
+
+  /* =============================
+     Load Current User
+  ============================= */
   useEffect(() => {
     const userId = localStorage.getItem('userId');
     const username = localStorage.getItem('username');
+
     if (userId && username) {
       setCurrentUser({ id: userId, username });
     }
   }, []);
 
+  /* =============================
+     Tabs Configuration
+  ============================= */
   const settingsTabs = [
-    { id: 'security', label: 'Security', icon: Shield, description: 'Password and security settings' },
-    { id: 'profile', label: 'Profile', icon: User, description: 'Personal information and preferences' },
-    { id: 'disabilities', label: 'Disabilities', icon: GraduationCap, description: 'Manage your disability information' },
-    { id: 'appearance', label: 'Appearance', icon: Palette, description: 'Theme and display settings' },
-    { id: 'language', label: 'Language', icon: Globe, description: 'Language and region settings' },
+    {
+      id: 'security',
+      label: 'Security',
+      icon: Shield,
+      description: 'Password and security settings',
+    },
+    {
+      id: 'profile',
+      label: 'Profile',
+      icon: User,
+      description: 'Personal information and preferences',
+    },
+    {
+      id: 'disabilities',
+      label: 'Disabilities',
+      icon: GraduationCap,
+      description: 'Manage your disability information',
+    },
+    {
+      id: 'appearance',
+      label: 'Appearance',
+      icon: Palette,
+      description: 'Theme and display settings',
+    },
+    {
+      id: 'language',
+      label: 'Language',
+      icon: Globe,
+      description: 'Language and region settings',
+    },
   ];
 
+  /* =============================
+     Password Change Handler
+  ============================= */
   const handlePasswordChange = useCallback((field, value) => {
-    setPasswordForm(prev => ({ ...prev, [field]: value }));
+    setPasswordForm((prev) => ({
+      ...prev,
+      [field]: value,
+    }));
+
     if (field === 'newPassword') {
       setPasswordStrength(checkPasswordStrength(value));
     }
   }, []);
 
-  const handlePasswordSubmit = useCallback(async (e) => {
-    e.preventDefault();
-    setPasswordMessage('');
+  /* =============================
+     Submit Password Change
+  ============================= */
+  const handlePasswordSubmit = useCallback(
+    async (e) => {
+      e.preventDefault();
+      setPasswordMessage('');
 
-    if (passwordForm.newPassword !== passwordForm.confirmPassword) {
-      setPasswordMessage('Passwords do not match');
-      return;
-    }
-
-    if (passwordStrength < 3) {
-      setPasswordMessage('Password is too weak');
-      return;
-    }
-
-    setIsChangingPassword(true);
-
-    try {
-      const token = localStorage.getItem('token');
-      const userId = localStorage.getItem('userId');
-
-      if (!token || !userId) {
-        throw new Error('Session expired. Please login again.');
+      if (passwordForm.newPassword !== passwordForm.confirmPassword) {
+        setPasswordMessage('Passwords do not match');
+        return;
       }
 
-      const response = await fetch(`http://127.0.0.1:3000/api/change_password/${userId}/`, {
-        method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${token}`
-        },
-        body: JSON.stringify({
-          old_password: passwordForm.currentPassword,
-          new_password: passwordForm.newPassword,
-          confirm_password: passwordForm.confirmPassword,
-        }),
-      });
-
-      const data = await response.json();
-      
-      if (!response.ok) {
-        throw new Error(data.error || 'Password change failed');
+      if (passwordStrength < 3) {
+        setPasswordMessage('Password is too weak');
+        return;
       }
 
-      setPasswordMessage('Password changed successfully!');
-      setPasswordForm({ currentPassword: '', newPassword: '', confirmPassword: '' });
-    } catch (error) {
-      console.error('Password change error:', error);
-      setPasswordMessage(error.message || 'Failed to change password');
-    } finally {
-      setIsChangingPassword(false);
-    }
-  }, [passwordForm, passwordStrength]);
+      setIsChangingPassword(true);
 
+      try {
+        const token = localStorage.getItem('token');
+        const userId = localStorage.getItem('userId');
+
+        if (!token || !userId) {
+          throw new Error('Session expired. Please login again.');
+        }
+
+        const response = await fetch(
+          `http://127.0.0.1:3000/api/change_password/${userId}/`,
+          {
+            method: 'PUT',
+            headers: {
+              'Content-Type': 'application/json',
+              Authorization: `Bearer ${token}`,
+            },
+            body: JSON.stringify({
+              old_password: passwordForm.currentPassword,
+              new_password: passwordForm.newPassword,
+              confirm_password: passwordForm.confirmPassword,
+            }),
+          }
+        );
+
+        const data = await response.json();
+
+        if (!response.ok) {
+          throw new Error(data.error || 'Password change failed');
+        }
+
+        setPasswordMessage('Password changed successfully!');
+        setPasswordForm({
+          currentPassword: '',
+          newPassword: '',
+          confirmPassword: '',
+        });
+      } catch (error) {
+        console.error('Password change error:', error);
+        setPasswordMessage(
+          error.message || 'Failed to change password'
+        );
+      } finally {
+        setIsChangingPassword(false);
+      }
+    },
+    [passwordForm, passwordStrength]
+  );
+
+  /* =============================
+     Toggle Disability Selection
+  ============================= */
   const handleDisabilityToggle = useCallback((disability) => {
-    setDisabilities(prev => 
+    setDisabilities((prev) =>
       prev.includes(disability)
-        ? prev.filter(d => d !== disability)
+        ? prev.filter((d) => d !== disability)
         : [...prev, disability]
     );
   }, []);
 
-  const handleDisabilitySubmit = useCallback(async () => {
-    setIsUpdatingDisabilities(true);
-    setUpdateMessage('');
-    
-    try {
-      const token = localStorage.getItem('token');
-      const userId = localStorage.getItem('userId');
+  /* =============================
+     Submit Disabilities Update
+  ============================= */
+  const handleDisabilitySubmit = useCallback(
+    async () => {
+      setIsUpdatingDisabilities(true);
+      setUpdateMessage('');
 
-      if (!token || !userId) {
-        throw new Error('Session expired. Please login again.');
+      try {
+        const token = localStorage.getItem('token');
+        const userId = localStorage.getItem('userId');
+
+        if (!token || !userId) {
+          throw new Error('Session expired. Please login again.');
+        }
+
+        const response = await fetch(
+          `http://127.0.0.1:3000/api/update_disabilities/${userId}/`,
+          {
+            method: 'PUT',
+            headers: {
+              'Content-Type': 'application/json',
+              Authorization: `Bearer ${token}`,
+            },
+            body: JSON.stringify({ disabilities }),
+          }
+        );
+
+        const data = await response.json();
+
+        if (!response.ok) {
+          throw new Error(
+            data.error || 'Failed to update disabilities'
+          );
+        }
+
+        setUpdateMessage('Disabilities updated successfully!');
+      } catch (error) {
+        console.error('Update error:', error);
+        setUpdateMessage(
+          error.message || 'Failed to update disabilities'
+        );
+      } finally {
+        setIsUpdatingDisabilities(false);
       }
+    },
+    [disabilities]
+  );
 
-      const response = await fetch(`http://127.0.0.1:3000/api/update_disabilities/${userId}/`, {
-        method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${token}`
-        },
-        body: JSON.stringify({ disabilities }),
-      });
-
-      const data = await response.json();
-      
-      if (!response.ok) {
-        throw new Error(data.error || 'Failed to update disabilities');
-      }
-
-      setUpdateMessage('Disabilities updated successfully!');
-    } catch (error) {
-      console.error('Update error:', error);
-      setUpdateMessage(error.message || 'Failed to update disabilities');
-    } finally {
-      setIsUpdatingDisabilities(false);
-    }
-  }, [disabilities]);
-
+  /* =============================
+     Fetch Disabilities On Load
+  ============================= */
   useEffect(() => {
     const fetchDisabilities = async () => {
       try {
@@ -499,30 +780,39 @@ const StudentSettings = () => {
 
         if (!token || !userId) return;
 
-        const response = await fetch(`http://127.0.0.1:3000/api/update_disabilities/${userId}/`, {
-          headers: {
-            'Authorization': `Bearer ${token}`,
-            'Content-Type': 'application/json'
+        const response = await fetch(
+          `http://127.0.0.1:3000/api/update_disabilities/${userId}/`,
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+              'Content-Type': 'application/json',
+            },
           }
-        });
+        );
 
         if (response.ok) {
           const data = await response.json();
           setDisabilities(data.disabilities || []);
         }
       } catch (error) {
-        console.error('Failed to fetch disabilities:', error);
+        console.error(
+          'Failed to fetch disabilities:',
+          error
+        );
       }
     };
 
     fetchDisabilities();
   }, []);
 
+  /* =============================
+     Render Active Tab Content
+  ============================= */
   const renderTabContent = () => {
     switch (activeTab) {
       case 'security':
         return (
-          <SecuritySettings 
+          <SecuritySettings
             showCurrentPassword={showCurrentPassword}
             showNewPassword={showNewPassword}
             showConfirmPassword={showConfirmPassword}
@@ -532,30 +822,60 @@ const StudentSettings = () => {
             passwordMessage={passwordMessage}
             handlePasswordChange={handlePasswordChange}
             handlePasswordSubmit={handlePasswordSubmit}
-            setShowCurrentPassword={setShowCurrentPassword}
+            setShowCurrentPassword={
+              setShowCurrentPassword
+            }
             setShowNewPassword={setShowNewPassword}
-            setShowConfirmPassword={setShowConfirmPassword}
+            setShowConfirmPassword={
+              setShowConfirmPassword
+            }
           />
         );
+
       case 'disabilities':
         return (
           <DisabilitiesSettings
             disabilities={disabilities}
-            handleDisabilityToggle={handleDisabilityToggle}
-            handleDisabilitySubmit={handleDisabilitySubmit}
-            isUpdatingDisabilities={isUpdatingDisabilities}
+            handleDisabilityToggle={
+              handleDisabilityToggle
+            }
+            handleDisabilitySubmit={
+              handleDisabilitySubmit
+            }
+            isUpdatingDisabilities={
+              isUpdatingDisabilities
+            }
             updateMessage={updateMessage}
           />
         );
+
       case 'profile':
-        return <PlaceholderTab title="Profile Settings" description="Manage your personal information and preferences" />;
+        return (
+          <PlaceholderTab
+            title="Profile Settings"
+            description="Manage your personal information and preferences"
+          />
+        );
+
       case 'appearance':
-        return <PlaceholderTab title="Appearance Settings" description="Customize the look and feel" />;
+        return (
+          <PlaceholderTab
+            title="Appearance Settings"
+            description="Customize the look and feel"
+          />
+        );
+
       case 'language':
-        return <PlaceholderTab title="Language Settings" description="Change language and region" />;
+        return (
+          <PlaceholderTab
+            title="Language Settings"
+            description="Change language and region"
+          />
+        );
+
       default:
         return (
-          <SecuritySettings 
+          <SecuritySettings
             showCurrentPassword={showCurrentPassword}
             showNewPassword={showNewPassword}
             showConfirmPassword={showConfirmPassword}
@@ -565,49 +885,72 @@ const StudentSettings = () => {
             passwordMessage={passwordMessage}
             handlePasswordChange={handlePasswordChange}
             handlePasswordSubmit={handlePasswordSubmit}
-            setShowCurrentPassword={setShowCurrentPassword}
+            setShowCurrentPassword={
+              setShowCurrentPassword
+            }
             setShowNewPassword={setShowNewPassword}
-            setShowConfirmPassword={setShowConfirmPassword}
+            setShowConfirmPassword={
+              setShowConfirmPassword
+            }
           />
         );
     }
   };
 
+  /* =============================
+     Component UI
+  ============================= */
   return (
     <div className="space-y-8">
+      {/* Header */}
       <div className="text-center mb-8">
         <h2 className="text-4xl md:text-5xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-red-400 to-gray-400 mb-4">
           Settings
         </h2>
+
         <p className="text-gray-300 text-lg max-w-2xl mx-auto">
-          Manage your account preferences and security settings
+          Manage your account preferences and
+          security settings
         </p>
       </div>
+
+      {/* Tabs */}
       <div className="w-full flex justify-center">
-      <div className=" inline-flex backdrop-blur-md bg-white/10 rounded-xl border border-white/20 p-1">
-        <div className="flex flex-wrap gap-1">
-          {settingsTabs.map((tab) => {
-            const Icon = tab.icon;
-            return (
-              <button
-                key={tab.id}
-                onClick={() => setActiveTab(tab.id)}
-                className={`flex items-center px-4 py-3 rounded-lg font-medium transition-all duration-300 hover:scale-105 ${
-                  activeTab === tab.id
-                    ? 'bg-gradient-to-r from-red-500/20 to-gray-500/20 text-white shadow-lg'
-                    : 'text-gray-300 hover:bg-white/10 hover:text-white'
-                }`}
-                title={tab.description}
-              >
-                <Icon size={18} className="mr-2" />
-                {tab.label}
-              </button>
-            );
-          })}
+        <div className="inline-flex backdrop-blur-md bg-white/10 rounded-xl border border-white/20 p-1">
+          <div className="flex flex-wrap gap-1">
+            {settingsTabs.map((tab) => {
+              const Icon = tab.icon;
+
+              return (
+                <button
+                  key={tab.id}
+                  onClick={() =>
+                    setActiveTab(tab.id)
+                  }
+                  title={tab.description}
+                  className={`flex items-center px-4 py-3 rounded-lg font-medium transition-all duration-300 hover:scale-105 ${
+  activeTab === tab.id
+    ? isDark
+      ? 'bg-gradient-to-r from-red-500/20 to-gray-500/20 text-white shadow-lg'
+      : 'bg-gradient-to-r from-red-100 to-gray-200 text-gray-900 shadow-lg'
+    : isDark
+      ? 'text-gray-300 hover:bg-white/10 hover:text-white'
+      : 'text-gray-700 hover:bg-gray-200 hover:text-gray-900'
+}`}
+                >
+                  <Icon
+                    size={18}
+                    className="mr-2"
+                  />
+                  {tab.label}
+                </button>
+              );
+            })}
+          </div>
         </div>
       </div>
-      </div>
 
+      {/* Content */}
       <div className="min-h-[400px]">
         {renderTabContent()}
       </div>

@@ -15,6 +15,7 @@ import ExamsQuizzes from './Pages/teacher-quiz/ExamsQuizzes';
 import CreateQuiz from './Pages/teacher-quiz/CreateQuiz';
 import EditQuiz from './Pages/teacher-quiz/EditQuiz';
 import TeacherSettings from './Components/TeacherSettings';
+import StudentSettings from './Components/StudentSettings';
 import PlaceholderPage from './Components/PlaceholderPage';
 import StudentResultPage from './Pages/student-quiz/QuizResults';
 import StudyOverview from './Pages/StudyOverview';
@@ -66,7 +67,8 @@ function App() {
                         element={<ContentDetail />}
                     />
 
-                    <Route path="settings" element={<PlaceholderPage title="settings" description="Track and submit assignments" />} />
+
+                    <Route path="settings" element={<StudentSettings />} />
                     <Route path="assignments" element={<PlaceholderPage title="Assignments" description="Track and submit assignments" />} />
                     <Route path="schedule" element={<PlaceholderPage title="Schedule" description="Daily and weekly learning schedule" />} />
                     <Route path="progress" element={<PlaceholderPage title="Progress & Analytics" description="Your learning analytics and goals" />} />
