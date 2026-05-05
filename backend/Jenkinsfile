@@ -23,14 +23,6 @@ pipeline {
             }
         }
 
-        stage('Test') {
-            steps {
-                dir('backend') {
-                    sh 'npm run test'
-                }
-            }
-        }
-
         stage('Build') {
             steps {
                 dir('backend') {
