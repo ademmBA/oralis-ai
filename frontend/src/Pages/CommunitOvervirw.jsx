@@ -1,6 +1,6 @@
 import  { useState, useEffect, useRef } from 'react';
 import { Users, Clock, Heart, Quote, GraduationCap } from 'lucide-react';
-import { useSpeechSynthesis } from 'react-speech-kit';
+//import { useSpeechSynthesis } from 'react-speech-kit';
 
 
 // Animated Background Component (same as StudyDashboard)

@@ -24,7 +24,7 @@ import { SessionsGateway } from './sessions/sessions.gateway';
       isGlobal: true,
       envFilePath: '.env',
     }),
-    MongooseModule.forRoot('mongodb://localhost:27017/platformdb'),
+    MongooseModule.forRoot('mongodb://mongo:27017/platformdb'),
     UsersModule,
     ClassesModule,
     SubmissionsModule,

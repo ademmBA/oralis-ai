@@ -1,0 +1,52 @@
+pipeline {
+    agent any
+
+    tools {
+        nodejs 'NodeJS 20'
+    }
+
+    stages {
+
+        stage('Checkout') {
+            steps {
+                git 'https://github.com/ademmBA/oralis-ai.git'
+            }
+        }
+
+        stage('Install') {
+            steps {
+                dir('frontend') {
+                    sh 'npm install'
+                }
+            }
+        }
+
+        stage('Test') {
+            steps {
+                dir('frontend') {
+                    sh 'npm test -- --watchAll=false'
+                }
+            }
+        }
+
+        stage('Build') {
+            steps {
+                dir('frontend') {
+                    sh 'npm run build'
+                }
+            }
+        }
+
+        stage('Docker Build') {
+            steps {
+                sh 'docker build -t pi-frontend ./frontend'
+            }
+        }
+
+        stage('Run') {
+            steps {
+                sh 'docker run -d -p 8080:80 pi-frontend'
+            }
+        }
+    }
+}

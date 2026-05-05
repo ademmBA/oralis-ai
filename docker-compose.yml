@@ -1,0 +1,29 @@
+version: "3.8"
+
+services:
+
+  backend:
+    build: ./backend
+    container_name: pi-backend
+    ports:
+      - "3000:3000"
+    environment:
+      - MONGO_URI=mongodb://mongo:27017/pi_db
+    depends_on:
+      - mongo
+
+
+  frontend:
+    build: ./frontend
+    container_name: pi-frontend
+    ports:
+      - "8080:80"
+    depends_on:
+      - backend
+      
+
+  mongo:
+    image: mongo:6
+    container_name: pi-mongo
+    ports:
+      - "27017:27017"

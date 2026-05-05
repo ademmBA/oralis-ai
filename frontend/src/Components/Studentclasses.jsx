@@ -4,7 +4,7 @@ import {
   Layers, Mail, RefreshCw,
 } from 'lucide-react';
 import { useTheme } from '../context/ThemeContect.jsx';
-import api from '../api/axios';
+import api from '../api/axios.js';
 
 // ─── Stat Pill ────────────────────────────────────────────────────────────────
 
