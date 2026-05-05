@@ -9,7 +9,9 @@ pipeline {
 
         stage('Checkout') {
             steps {
-                git 'https://github.com/ademmBA/oralis-ai.git'
+                git branch: 'main',
+                    credentialsId: 'd49ea3fa-057f-48a2-a3cd-b9a78f6bca26',
+                    url: 'https://github.com/ademmBA/oralis-ai.git'
             }
         }
 
