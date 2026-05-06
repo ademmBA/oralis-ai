@@ -35,9 +35,8 @@ import { ThemeProvider } from "@/context/ThemeContect.jsx";
 import OAuthCallback from './Pages/OAuthCallback.jsx';
 import { AccessibilityProvider } from "@/context/AccessibilityContext";
 import { AccessibilityWidget } from "@/Components/AccessibilityWidget";
-//import ClassManagement from './components/ClassManagement';
-import ClassManagement from "./components/ClassManagement.jsx";
-import StudentClasses from './components/StudentClasses.jsx';
+//import ClassManagement from "./components/ClassManagement.jsx";
+//import StudentClasses from './components/StudentClasses.jsx';
 import AdminClassManagement from './Components/Adminclassmanagement.jsx';
 import Assignments from './Pages/student/Assignments.jsx';
 import AssignmentsTeacher from './Pages/teacher/AssignmentsTeacher.jsx';
@@ -95,7 +94,7 @@ function App() {
                   />
 
                   {/* Class Management — Student */}
-                  <Route path="classes" element={<StudentClasses />} />
+                  {/* <Route path="classes" element={<StudentClasses />} /> */}
 
                   <Route path="settings" element={<StudentSettings />} />
                   <Route path="submissionshistory" element={<StudentSubmissionHistory />} />
@@ -147,7 +146,7 @@ function App() {
                   />
 
                   {/* Class Management — Instructor */}
-                  <Route path="classes" element={<ClassManagement />} />
+                  {/* <Route path="classes" element={<ClassManagement />} /> */}
 
                   <Route path="submissions" element={<TeacherSubmissions />} />
                   <Route path="submissions/:id" element={<SubmissionDetail />} />
