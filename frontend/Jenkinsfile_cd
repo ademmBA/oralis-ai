@@ -11,13 +11,13 @@ pipeline {
 
         stage('Docker Build Frontend') {
             steps {
-                bat 'docker build -t pi-frontend:latest ./frontend'
+                sh 'docker build -t pi-frontend:latest ./frontend'
             }
         }
 
         stage('Docker Run Frontend') {
             steps {
-                bat '''
+                sh '''
                 docker stop pi-frontend || exit 0
                 docker rm pi-frontend || exit 0
                 docker run -d --name pi-frontend -p 8080:80 pi-frontend:latest

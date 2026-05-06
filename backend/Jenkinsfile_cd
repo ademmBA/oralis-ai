@@ -11,13 +11,13 @@ pipeline {
 
         stage('Docker Build Backend') {
             steps {
-                bat 'docker build -t pi-backend:latest ./backend'
+                sh 'docker build -t pi-backend:latest ./backend'
             }
         }
 
         stage('Docker Run Backend') {
             steps {
-                bat '''
+                sh '''
                 docker stop pi-backend || exit 0
                 docker rm pi-backend || exit 0
                 docker run -d --name pi-backend -p 3000:3000 pi-backend:latest
