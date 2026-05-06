@@ -1,0 +1,28 @@
+pipeline {
+    agent any
+
+    stages {
+        stage('Checkout') {
+            steps {
+                git branch: 'main',
+                url: 'https://github.com/ademmBA/oralis-ai.git'
+            }
+        }
+
+        stage('Docker Build Frontend') {
+            steps {
+                bat 'docker build -t pi-frontend:latest ./frontend'
+            }
+        }
+
+        stage('Docker Run Frontend') {
+            steps {
+                bat '''
+                docker stop pi-frontend || exit 0
+                docker rm pi-frontend || exit 0
+                docker run -d --name pi-frontend -p 8080:80 pi-frontend:latest
+                '''
+            }
+        }
+    }
+}

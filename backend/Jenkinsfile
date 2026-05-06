@@ -42,5 +42,12 @@ pipeline {
                 sh 'docker run -d -p 3000:3000 pi-backend'
             }
         }
+
+        stage('SonarQube') {
+            steps {
+                sh 'sonar-scanner'
+            }
+        }
+
     }
 }
